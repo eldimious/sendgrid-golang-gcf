@@ -1,7 +1,7 @@
 package dispatcher
 
 import (
-	"github.com/eldimious/slack-golang-gcf/config"
+	"github.com/eldimious/sendgrid-golang-gcf/config"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )

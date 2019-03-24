@@ -1,6 +1,6 @@
 package config
 
-import "github.com/eldimious/slack-golang-gcf/utils/env"
+import "github.com/eldimious/sendgrid-golang-gcf/utils/env"
 
 // Config is a struct that contains configuration variables
 type Config struct {
