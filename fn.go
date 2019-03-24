@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/eldimious/sendgrid-golang-gcf/config"
 	email "github.com/eldimious/sendgrid-golang-gcf/domain/emails"
 	validator "github.com/eldimious/sendgrid-golang-gcf/router"
 )
@@ -44,14 +45,14 @@ func SendEmail(w http.ResponseWriter, r *http.Request) {
 		HtmlContent:      data.HtmlContent,
 	}
 
-	// configuration, err := config.NewConfig()
-	// if err != nil {
-	// 	log.Println(err.Error())
-	// 	w.Header().Set("Content-type", "applciation/json")
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	w.Write([]byte(err.Error()))
-	// 	return
-	// }
+	configuration, err := config.NewConfig()
+	if err != nil {
+		log.Println(err.Error())
+		w.Header().Set("Content-type", "applciation/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
 
 	// messagesDispatcher := dispatcher.New(configuration.Slack)
 	// messagesSvc := messages.NewService(messagesDispatcher)
