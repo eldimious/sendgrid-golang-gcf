@@ -9,11 +9,12 @@ import (
 	"github.com/eldimious/sendgrid-golang-gcf/config"
 	dispatcher "github.com/eldimious/sendgrid-golang-gcf/data/dispatcher"
 	email "github.com/eldimious/sendgrid-golang-gcf/domain/emails"
-	validator "github.com/eldimious/sendgrid-golang-gcf/router"
+	authentication "github.com/eldimious/sendgrid-golang-gcf/router/authentication"
+	validator "github.com/eldimious/sendgrid-golang-gcf/router/validator"
 )
 
 func SendEmail(w http.ResponseWriter, r *http.Request) {
-	data := &validator.MessageValidator{}
+	data := &validator.BodyValidator{}
 	defer r.Body.Close()
 	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
@@ -52,6 +53,15 @@ func SendEmail(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-type", "applciation/json")
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
+		return
+	}
+
+	authenticationErr := authentication.Authenticate(r, configuration.FaaS)
+	if authenticationErr != nil {
+		w.Header().Set("Content-type", "applciation/json")
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte(authenticationErr.Error()))
+		log.Println(authenticationErr.Error())
 		return
 	}
 

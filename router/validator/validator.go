@@ -1,10 +1,10 @@
-package messageValidator
+package bodyValidator
 
 import (
 	"net/url"
 )
 
-type MessageValidator struct {
+type BodyValidator struct {
 	FromName         string `binding:"required" json:"fromName"`
 	FromEmail        string `binding:"required" json:"fromEmail"`
 	ToName           string `binding:"required" json:"toName"`
@@ -14,7 +14,7 @@ type MessageValidator struct {
 	HtmlContent      string `json:"htmlContent"`
 }
 
-func Validate(a *MessageValidator) url.Values {
+func Validate(a *BodyValidator) url.Values {
 	errs := url.Values{}
 
 	// check if the title empty
