@@ -20,7 +20,7 @@ func New(config *config.SendGrid) *Dispatcher {
 }
 
 // SendEmail sends email to receivers
-func (dispatcher *Dispatcher) SendEmail(sender *domain.From, receiver *domain.To, msg *domain.Message) error {
+func (dispatcher *Dispatcher) SendEmail(sender *domain.Sender, receiver *domain.Receiver, msg *domain.Message) error {
 	from := mail.NewEmail(sender.Name, sender.Email)
 	subject := msg.Subject
 	to := mail.NewEmail(receiver.Name, receiver.Email)

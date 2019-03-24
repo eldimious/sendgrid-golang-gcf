@@ -32,11 +32,11 @@ func SendEmail(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err)
 		return
 	}
-	from := &email.From{
+	from := &email.Sender{
 		Name:  data.FromName,
 		Email: data.FromEmail,
 	}
-	to := &email.To{
+	to := &email.Receiver{
 		Name:  data.ToName,
 		Email: data.ToEmail,
 	}

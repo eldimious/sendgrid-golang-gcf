@@ -1,6 +1,6 @@
 package email
 
-// EmailRepository provides an abstraction on top of the email data source
+// EmailRepository provides an abstraction on top of the dispatcher data source
 type EmailRepository interface {
-	SendEmail(*From, *To, *Message) error
+	SendEmail(*Sender, *Receiver, *Message) error
 }

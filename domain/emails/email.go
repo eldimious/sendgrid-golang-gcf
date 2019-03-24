@@ -7,12 +7,12 @@ type Message struct {
 	Subject          string
 }
 
-type From struct {
+type Sender struct {
 	Name  string
 	Email string
 }
 
-type To struct {
+type Receiver struct {
 	Name  string
 	Email string
 }
