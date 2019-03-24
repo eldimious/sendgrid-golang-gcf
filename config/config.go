@@ -7,7 +7,7 @@ type Config struct {
 	SendGrid *SendGrid
 }
 
-// Slack is a struct that contains SendGrid's configuration variables
+// SendGrid is a struct that contains SendGrid's configuration variables
 type SendGrid struct {
 	APIKey string
 }

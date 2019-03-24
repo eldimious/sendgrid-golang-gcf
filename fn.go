@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/eldimious/sendgrid-golang-gcf/config"
+	dispatcher "github.com/eldimious/sendgrid-golang-gcf/data/dispatcher"
 	email "github.com/eldimious/sendgrid-golang-gcf/domain/emails"
 	validator "github.com/eldimious/sendgrid-golang-gcf/router"
 )
@@ -54,19 +55,19 @@ func SendEmail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// messagesDispatcher := dispatcher.New(configuration.Slack)
-	// messagesSvc := messages.NewService(messagesDispatcher)
-	// dispatcherError := messagesSvc.SendMessage(message)
-	// if dispatcherError != nil {
-	// 	w.Header().Set("Content-type", "applciation/json")
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	w.Write([]byte(dispatcherError.Error()))
-	// 	log.Println(dispatcherError.Error())
-	// 	return
-	// }
+	emailDispatcher := dispatcher.New(configuration.SendGrid)
+	emailsSvc := email.NewService(emailDispatcher)
+	dispatcherError := emailsSvc.SendMessage(from, to message)
+	if dispatcherError != nil {
+		w.Header().Set("Content-type", "applciation/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(dispatcherError.Error()))
+		log.Println(dispatcherError.Error())
+		return
+	}
 
-	// w.WriteHeader(http.StatusOK)
-	// w.Header().Set("Content-type", "applciation/json")
-	// w.Write([]byte("Your message has been sent successfully!"))
-	// return
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-type", "applciation/json")
+	w.Write([]byte("Your message has been sent successfully!"))
+	return
 }
