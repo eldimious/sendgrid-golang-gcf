@@ -14,14 +14,24 @@ import (
 )
 
 func SendEmail(w http.ResponseWriter, r *http.Request) {
-	data := &validator.BodyValidator{}
-	defer r.Body.Close()
-	err := json.NewDecoder(r.Body).Decode(&data)
+	configuration, err := config.NewConfig()
 	if err != nil {
+		log.Println(err.Error())
 		w.Header().Set("Content-type", "applciation/json")
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
-		log.Println(err.Error())
+		return
+	}
+	authenticationErr := authentication.Authenticate(r, configuration.FaaS)
+
+	data := &validator.BodyValidator{}
+	defer r.Body.Close()
+	jsonErr := json.NewDecoder(r.Body).Decode(&data)
+	if jsonErr != nil {
+		w.Header().Set("Content-type", "applciation/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(jsonErr.Error()))
+		log.Println(jsonErr.Error())
 		return
 	}
 	validationErrs := validator.Validate(data)
@@ -47,16 +57,6 @@ func SendEmail(w http.ResponseWriter, r *http.Request) {
 		HtmlContent:      data.HtmlContent,
 	}
 
-	configuration, err := config.NewConfig()
-	if err != nil {
-		log.Println(err.Error())
-		w.Header().Set("Content-type", "applciation/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	}
-
-	authenticationErr := authentication.Authenticate(r, configuration.FaaS)
 	if authenticationErr != nil {
 		w.Header().Set("Content-type", "applciation/json")
 		w.WriteHeader(http.StatusUnauthorized)
