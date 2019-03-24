@@ -1,6 +1,6 @@
 module github.com/eldimious/sendgrid-golang-gcf
 
-go 1.12
+go 1.11
 
 require (
 	github.com/joho/godotenv v1.3.0
