@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	email "github.com/eldimious/sendgrid-golang-gcf/domain/emails"
 	validator "github.com/eldimious/sendgrid-golang-gcf/router"
 )
 
@@ -29,13 +30,19 @@ func SendEmail(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err)
 		return
 	}
-	// message := &messages.Message{
-	// 	Text:      data.Text,
-	// 	Username:  data.Username,
-	// 	Channel:   data.Channel,
-	// 	IconEmoji: data.IconEmoji,
-	// 	Type:      data.Type,
-	// }
+	from := &email.From{
+		Name:  data.FromName,
+		Email: data.FromEmail,
+	}
+	to := &email.To{
+		Name:  data.ToName,
+		Email: data.ToEmail,
+	}
+	message := &email.Message{
+		Subject:          data.Subject,
+		PlainTextContent: data.PlainTextContent,
+		HtmlContent:      data.HtmlContent,
+	}
 
 	// configuration, err := config.NewConfig()
 	// if err != nil {
