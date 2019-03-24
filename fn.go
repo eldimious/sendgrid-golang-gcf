@@ -57,7 +57,7 @@ func SendEmail(w http.ResponseWriter, r *http.Request) {
 
 	emailDispatcher := dispatcher.New(configuration.SendGrid)
 	emailsSvc := email.NewService(emailDispatcher)
-	dispatcherError := emailsSvc.SendMessage(from, to message)
+	dispatcherError := emailsSvc.SendEmail(from, to, message)
 	if dispatcherError != nil {
 		w.Header().Set("Content-type", "applciation/json")
 		w.WriteHeader(http.StatusInternalServerError)
