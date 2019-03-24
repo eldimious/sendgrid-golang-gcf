@@ -19,12 +19,12 @@ func New(config *config.SendGrid) *Dispatcher {
 }
 
 // SendEmail sends email to receivers
-func (dispatcher *Dispatcher) SendEmail(from *domain.From, to *domain.To, details *domain.Details) error {
-	from := mail.NewEmail(from.name, from.name)
-	subject := details.subject
-	to := mail.NewEmail(to.name, to.name)
-	plainTextContent := details.plainTextContent
-	htmlContent := details.htmlContent
+func (dispatcher *Dispatcher) SendEmail(from *domain.From, to *domain.To, msg *domain.Message) error {
+	from := mail.NewEmail(from.name, from.email)
+	subject := msg.subject
+	to := mail.NewEmail(to.name, to.email)
+	plainTextContent := msg.plainTextContent
+	htmlContent := msg.htmlContent
 	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
 	client := sendgrid.NewSendClient(dispatcher.config.SendGridAPIKey)
 	response, err := client.Send(message)
